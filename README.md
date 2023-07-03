@@ -13,6 +13,7 @@ By working on this project, I aimed to achieve the following learning outcomes:
 3. Slices or maps for manuplating tasks(Datastructures).
 4. User input validation and error handling.
 5. Working with Dates and Time
-6. Unit testing.
+6. Pointers
+7. Unit testing.
 
 Feel free to explore the codebase and provide any feedback or suggestions for improvement.
