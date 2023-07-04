@@ -16,4 +16,4 @@ By working on this project, I aimed to achieve the following learning outcomes:
 6. Pointers
 7. Unit testing.
 
-Feel free to explore the codebase and provide any feedback or suggestions for improvement.
+Feel free to explore the codebase and provide any feedback or suggestions for improvement. You can also contribute to the project by making a pull request.
