@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -44,12 +45,23 @@ func main() {
 }
 
 // Handles the logic for adding a task to the list
-func addTask(tasks *[]Task, reader io.Reader) {
+func addTask(tasks *[]Task, reader io.Reader) error {
 	scanner := bufio.NewScanner(reader)
+	var title string
 
-	fmt.Println("Enter task title: ")
-	scanner.Scan()
-	title := scanner.Text()
+	for i := 0; i < 3; i++ {
+		fmt.Println("Enter task title: ")
+		scanner.Scan()
+		title = scanner.Text()
+
+		if title != "" {
+			break
+		}
+	}
+
+	if title == "" {
+		return errors.New("title is required")
+	}
 
 	fmt.Println("Enter task description: ")
 	scanner.Scan()
@@ -65,6 +77,8 @@ func addTask(tasks *[]Task, reader io.Reader) {
 	*tasks = append(*tasks, task)
 
 	fmt.Println("Task added successfully!")
+
+	return nil
 }
 
 func listTasks(tasks []Task, w io.Writer) {

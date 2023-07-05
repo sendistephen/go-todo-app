@@ -1,13 +1,14 @@
 package main
 
 import (
+	"bufio"
 	"bytes"
 	"reflect"
 	"strings"
 	"testing"
 )
 
-func TestAddTask(t *testing.T) {
+func TestAddWithNonEmptyTitle(t *testing.T) {
 	// initialize an empty tasks slice
 	var tasks []Task
 
@@ -31,6 +32,26 @@ func TestAddTask(t *testing.T) {
 
 	if !reflect.DeepEqual(tasks[0], expectedTask) {
 		t.Errorf("Expected task %#v, but got %#v", expectedTask, tasks[0])
+	}
+
+}
+
+func TestAddTaskWithEmptyTitle(t *testing.T) {
+	tasks := []Task{}
+
+	reader := bufio.NewReader(strings.NewReader(""))
+	err := addTask(&tasks, reader)
+
+	if err == nil {
+		t.Errorf("Expected error, got nil")
+	}
+
+	if err.Error() != "title is required" {
+		t.Errorf("Expected error message to be 'title is required', got %s", err.Error())
+	}
+
+	if len(tasks) != 0 {
+		t.Errorf("Expected 0 tasks, got %d", len(tasks))
 	}
 }
 
@@ -56,7 +77,7 @@ func TestListTasks(t *testing.T) {
 	// Split the expected and actual output into lines
 	expectedLines := strings.Split(expectedOutput, "\n")
 	actualLines := strings.Split(actualOutput, "\n")
-	
+
 	// Compare each line of the expected and actual output
 	for i, expectedLine := range expectedLines {
 		if i >= len(actualLines) {
