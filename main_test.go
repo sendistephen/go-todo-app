@@ -40,6 +40,7 @@ func TestAddTaskWithEmptyTitle(t *testing.T) {
 	tasks := []Task{}
 
 	reader := bufio.NewReader(strings.NewReader(""))
+
 	err := addTask(&tasks, reader)
 
 	if err == nil {
@@ -52,6 +53,42 @@ func TestAddTaskWithEmptyTitle(t *testing.T) {
 
 	if len(tasks) != 0 {
 		t.Errorf("Expected 0 tasks, got %d", len(tasks))
+	}
+}
+func TestCompleteTask(t *testing.T) {
+	tasks := []Task{
+		{ID: 1, Title: "Task 1", Description: "Description 1", Completed: false},
+		{ID: 2, Title: "Task 2", Description: "Description 2", Completed: true},
+	}
+	reader := bufio.NewReader(strings.NewReader("1"))
+
+	err := completeTask(tasks, reader)
+
+	if err != nil {
+		t.Errorf("Expected nil error, got %v", err)
+	}
+
+	if tasks[0].Completed != true {
+		t.Errorf("Expected task to be completed, got %v", tasks[0].Completed)
+	}
+
+}
+
+func TestCompleteTaskWithInvalidID(t *testing.T) {
+	tasks := []Task{
+		{ID: 1, Title: "Task 1", Description: "Description 1", Completed: false},
+		{ID: 2, Title: "Task 2", Description: "Description 2", Completed: true},
+	}
+	reader := bufio.NewReader(strings.NewReader("4"))
+
+	err := completeTask(tasks, reader)
+
+	if err == nil {
+		t.Errorf("Expected error, got nil")
+	}
+
+	if err.Error() != "invalid ID" {
+		t.Errorf("Expected error message 'invalid ID', got %v", err.Error())
 	}
 }
 
