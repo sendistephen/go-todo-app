@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strconv"
 )
 
 type Task struct {
@@ -21,7 +22,8 @@ func main() {
 	for {
 		fmt.Println("1. Add Task")
 		fmt.Println("2. List Tasks")
-		fmt.Println("3. Exit")
+		fmt.Println("3. Complete Task")
+		fmt.Println("4. Exit")
 
 		fmt.Print("Enter your choice: ")
 
@@ -34,6 +36,8 @@ func main() {
 		case 2:
 			listTasks(tasks, os.Stdout)
 		case 3:
+			completeTask(tasks, os.Stdin)
+		case 4:
 			fmt.Println("Goodbye!")
 			return
 		default:
@@ -79,6 +83,31 @@ func addTask(tasks *[]Task, reader io.Reader) error {
 	fmt.Println("Task added successfully!")
 
 	return nil
+}
+
+func completeTask(tasks []Task, reader io.Reader) error {
+
+	scanner := bufio.NewScanner(reader)
+
+	fmt.Println("Enter task id: ")
+	scanner.Scan()
+	taskId := scanner.Text()
+
+	// convert taskId to an int
+	id, err := strconv.Atoi(taskId)
+
+	if err != nil {
+		fmt.Println("Error: ", err)
+	}
+
+	for i, task := range tasks {
+		if task.ID == id {
+			tasks[i].Completed = true
+			return nil
+		}
+
+	}
+	return errors.New("invalid ID")
 }
 
 func listTasks(tasks []Task, w io.Writer) {
