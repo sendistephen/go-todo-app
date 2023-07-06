@@ -97,12 +97,13 @@ func completeTask(tasks []Task, reader io.Reader) error {
 	id, err := strconv.Atoi(taskId)
 
 	if err != nil {
-		fmt.Println("Error: ", err)
+		fmt.Println("ID must be a number")
 	}
 
 	for i, task := range tasks {
 		if task.ID == id {
 			tasks[i].Completed = true
+			fmt.Println("Task completed successfully")
 			return nil
 		}
 
